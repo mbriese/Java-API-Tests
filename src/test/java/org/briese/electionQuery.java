@@ -74,15 +74,29 @@ public class electionQuery {
        RestAssured.baseURI = header;
        RequestSpecification httpRequest = RestAssured.given();
        Response response = httpRequest.request(Method.GET, header );
-       String responseBody = response.getBody().asString();
 
-       System.out.println(responseBody);
        JsonPath jsonPathValidator = response.jsonPath();
-       System.out.println("ID: \n" + jsonPathValidator.get("elections"));
+       List<String> jsonResponseRoot = jsonPathValidator.getList("elections");
+       int electionCount = jsonResponseRoot.size();
+       boolean atleastOneElection = (electionCount > 0);
+       Assert.assertTrue(atleastOneElection);
+       System.out.println("Election count is > 0 "+atleastOneElection);
     }
 
 
-    /* Test 4: does election list contain multiple electionID? */
+    /* Test 4: get election IDs to use in voterInfo Query? */
+    @Test
+    public void getListOfElections(){
+        RestAssured.baseURI = header;
+        RequestSpecification httpRequest = RestAssured.given();
+        Response response = httpRequest.request(Method.GET, header );
 
+        JsonPath jsonPathValidator = response.jsonPath();
+        List<String> elections = jsonPathValidator.getList("elections");
+        int electionCount = elections.size();
+        List<String> electionIDs = jsonPathValidator.getList("id");
+        System.out.println("Number of Elections "+electionCount);
+
+    }
 
 }
