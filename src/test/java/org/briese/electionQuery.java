@@ -77,6 +77,8 @@ public class electionQuery {
        String responseBody = response.getBody().asString();
 
        System.out.println(responseBody);
+       JsonPath jsonPathValidator = response.jsonPath();
+       System.out.println("ID: \n" + jsonPathValidator.get("elections"));
     }
 
 
